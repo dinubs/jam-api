@@ -1,0 +1,18 @@
+doctype html
+html(lang="en")
+  head
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css")
+    link(rel="stylesheet", type="text/css", href="/css/the.css")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(name="description" content=app_descripttion)
+    meta(charset="UTF-8")
+    title=app_name
+  body
+    nav
+      .wrap
+        a.logo(href="/")=app_name
+        ul
+          li
+            a.link(href="/") Home
+    block content
+    script(type="application/javascript", src="/js/the.js")
