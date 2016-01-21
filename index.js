@@ -3,7 +3,7 @@ var fs = require("fs");
 var Path = require('path');
 var Hapi = require('hapi');
 
-var server = new Hapi.Server();
+var server = new Hapi.Server({ debug: { request: ['error'] } });
 server.connection({port: process.env.PORT || 3000});
 
 server.views({
