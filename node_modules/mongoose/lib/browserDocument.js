@@ -2,14 +2,14 @@
  * Module dependencies.
  */
 
-var NodeJSDocument = require('./document')
-  , EventEmitter = require('events').EventEmitter
-  , MongooseError = require('./error')
-  , Schema = require('./schema')
-  , ObjectId = require('./types/objectid')
-  , utils = require('./utils')
-  , ValidationError = MongooseError.ValidationError
-  , InternalCache = require('./internal');
+var NodeJSDocument = require('./document'),
+    EventEmitter = require('events').EventEmitter,
+    MongooseError = require('./error'),
+    Schema = require('./schema'),
+    ObjectId = require('./types/objectid'),
+    utils = require('./utils'),
+    ValidationError = MongooseError.ValidationError,
+    InternalCache = require('./internal');
 
 /**
  * Document constructor.
@@ -18,17 +18,17 @@ var NodeJSDocument = require('./document')
  * @param {Object} [fields] optional object containing the fields which were selected in the query returning this document and any populated paths data
  * @param {Boolean} [skipId] bool, should we auto create an ObjectId _id
  * @inherits NodeJS EventEmitter http://nodejs.org/api/events.html#events_class_events_eventemitter
- * @event `init`: Emitted on a document after it has was retreived from the db and fully hydrated by Mongoose.
+ * @event `init`: Emitted on a document after it has was retrieved from the db and fully hydrated by Mongoose.
  * @event `save`: Emitted when the document is successfully saved
  * @api private
  */
 
-function Document (obj, schema, fields, skipId, skipInit) {
+function Document(obj, schema, fields, skipId, skipInit) {
   if ( !(this instanceof Document) )
     return new Document( obj, schema, fields, skipId, skipInit );
 
 
-  if (utils.isObject(schema) && !(schema instanceof Schema)) {
+  if (utils.isObject(schema) && !schema.instanceOfSchema) {
     schema = new Schema(schema);
   }
 
@@ -36,15 +36,15 @@ function Document (obj, schema, fields, skipId, skipInit) {
   schema = this.schema || schema;
 
   // Generate ObjectId if it is missing, but it requires a scheme
-  if ( !this.schema && schema.options._id ){
+  if ( !this.schema && schema.options._id ) {
     obj = obj || {};
 
-    if ( obj._id === undefined ){
+    if ( obj._id === undefined ) {
       obj._id = new ObjectId();
     }
   }
 
-  if ( !schema ){
+  if ( !schema ) {
     throw new MongooseError.MissingSchemaError();
   }
 
@@ -73,18 +73,18 @@ function Document (obj, schema, fields, skipId, skipInit) {
   this.$__.emitter.setMaxListeners(0);
   this._doc = this.$__buildDoc(obj, fields, skipId);
 
-  if ( !skipInit && obj ){
+  if ( !skipInit && obj ) {
     this.init( obj );
   }
 
   this.$__registerHooksFromSchema();
 
   // apply methods
-  for ( var m in schema.methods ){
+  for ( var m in schema.methods ) {
     this[ m ] = schema.methods[ m ];
   }
   // apply statics
-  for ( var s in schema.statics ){
+  for ( var s in schema.statics ) {
     this[ s ] = schema.statics[ s ];
   }
 }

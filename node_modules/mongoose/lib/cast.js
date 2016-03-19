@@ -14,14 +14,14 @@ var Types = require('./schema/index');
  */
 
 var cast = module.exports = function(schema, obj) {
-  var paths = Object.keys(obj)
-    , i = paths.length
-    , any$conditionals
-    , schematype
-    , nested
-    , path
-    , type
-    , val;
+  var paths = Object.keys(obj),
+      i = paths.length,
+      any$conditionals,
+      schematype,
+      nested,
+      path,
+      type,
+      val;
 
   while (i--) {
     path = paths[i];
@@ -47,6 +47,10 @@ var cast = module.exports = function(schema, obj) {
 
       continue;
 
+    } else if (path === '$elemMatch') {
+
+      val = cast(schema, val);
+
     } else {
 
       if (!schema) {
@@ -58,11 +62,11 @@ var cast = module.exports = function(schema, obj) {
 
       if (!schematype) {
         // Handle potential embedded array queries
-        var split = path.split('.')
-          , j = split.length
-          , pathFirstHalf
-          , pathLastHalf
-          , remainingConds;
+        var split = path.split('.'),
+            j = split.length,
+            pathFirstHalf,
+            pathLastHalf,
+            remainingConds;
 
         // Find the part of the var path that is a path of the Schema
         while (j--) {
@@ -129,16 +133,16 @@ var cast = module.exports = function(schema, obj) {
             value = value.$geometry.coordinates;
           }
 
-          (function _cast (val) {
+          (function _cast(val) {
             if (Array.isArray(val)) {
-              val.forEach(function (item, i) {
+              val.forEach(function(item, i) {
                 if (Array.isArray(item) || utils.isObject(item)) {
                   return _cast(item);
                 }
                 val[i] = numbertype.castForQuery(item);
               });
             } else {
-              var nearKeys= Object.keys(val);
+              var nearKeys = Object.keys(val);
               var nearLen = nearKeys.length;
               while (nearLen--) {
                 var nkey = nearKeys[nearLen];
@@ -159,7 +163,7 @@ var cast = module.exports = function(schema, obj) {
         continue;
       } else if ('Object' === val.constructor.name) {
 
-        any$conditionals = Object.keys(val).some(function (k) {
+        any$conditionals = Object.keys(val).some(function(k) {
           return k.charAt(0) === '$' && k !== '$id' && k !== '$ref';
         });
 
@@ -167,8 +171,8 @@ var cast = module.exports = function(schema, obj) {
           obj[path] = schematype.castForQuery(val);
         } else {
 
-          var ks = Object.keys(val)
-            , $cond;
+          var ks = Object.keys(val),
+              $cond;
 
           k = ks.length;
 

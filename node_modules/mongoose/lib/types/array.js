@@ -23,11 +23,18 @@ var isMongooseObject = utils.isMongooseObject;
  * @see http://bit.ly/f6CnZU
  */
 
-function MongooseArray (values, path, doc) {
+function MongooseArray(values, path, doc) {
   var arr = [].concat(values);
 
   utils.decorate( arr, MongooseArray.mixin );
   arr.isMongooseArray = true;
+
+  var _options = { enumerable: false, configurable: true, writable: true };
+  var keys = Object.keys(MongooseArray.mixin).
+    concat(['isMongooseArray', 'validators', '_path']);
+  for (var i = 0; i < keys.length; ++i) {
+    Object.defineProperty(arr, keys[i], _options);
+  }
 
   arr._atomics = {};
   arr.validators = [];
@@ -76,7 +83,7 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  _cast: function (value) {
+  _cast: function(value) {
     var owner = this._owner;
     var populated = false;
     var Model;
@@ -129,9 +136,9 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  _markModified: function (elem, embeddedPath) {
-    var parent = this._parent
-      , dirtyPath;
+  _markModified: function(elem, embeddedPath) {
+    var parent = this._parent,
+        dirtyPath;
 
     if (parent) {
       dirtyPath = this._path;
@@ -145,6 +152,7 @@ MongooseArray.mixin = {
           dirtyPath = dirtyPath + '.' + elem;
         }
       }
+
       parent.markModified(dirtyPath);
     }
 
@@ -161,7 +169,7 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  _registerAtomic: function (op, val) {
+  _registerAtomic: function(op, val) {
     if ('$set' == op) {
       // $set takes precedence over all other ops.
       // mark entire array modified.
@@ -174,7 +182,7 @@ MongooseArray.mixin = {
     // reset pop/shift after save
     if ('$pop' == op && !('$pop' in atomics)) {
       var self = this;
-      this._parent.once('save', function () {
+      this._parent.once('save', function() {
         self._popped = self._shifted = null;
       });
     }
@@ -189,13 +197,22 @@ MongooseArray.mixin = {
       return this;
     }
 
+    var selector;
+
     if (op === '$pullAll' || op === '$pushAll' || op === '$addToSet') {
       atomics[op] || (atomics[op] = []);
       atomics[op] = atomics[op].concat(val);
     } else if (op === '$pullDocs') {
-      var pullOp = atomics['$pull'] || (atomics['$pull'] = {})
-        , selector = pullOp['_id'] || (pullOp['_id'] = {'$in' : [] });
-      selector['$in'] = selector['$in'].concat(val);
+      var pullOp = atomics['$pull'] || (atomics['$pull'] = {});
+      if (val[0] instanceof EmbeddedDocument) {
+        selector = pullOp['$or'] || (pullOp['$or'] = []);
+        Array.prototype.push.apply(selector, val.map(function(v) {
+          return v.toObject({ virtuals: false });
+        }));
+      } else {
+        selector = pullOp['_id'] || (pullOp['_id'] = {'$in' : [] });
+        selector['$in'] = selector['$in'].concat(val);
+      }
     } else {
       atomics[op] = val;
     }
@@ -214,7 +231,7 @@ MongooseArray.mixin = {
    * @api private
    */
 
-  $__getAtomics: function () {
+  $__getAtomics: function() {
     var ret = [];
     var keys = Object.keys(this._atomics);
     var i = keys.length;
@@ -258,7 +275,7 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  hasAtomics: function hasAtomics () {
+  hasAtomics: function hasAtomics() {
     if (!(this._atomics && 'Object' === this._atomics.constructor.name)) {
       return 0;
     }
@@ -287,7 +304,7 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  push: function () {
+  push: function() {
     var values = [].map.call(arguments, this._mapCast, this);
     values = this._schema.applySetters(values, this._parent);
     var ret = [].push.apply(this, values);
@@ -312,7 +329,7 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  nonAtomicPush: function () {
+  nonAtomicPush: function() {
     var values = [].map.call(arguments, this._mapCast, this);
     var ret = [].push.apply(this, values);
     this._registerAtomic('$set', this);
@@ -355,7 +372,7 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  $pop: function () {
+  $pop: function() {
     this._registerAtomic('$pop', 1);
     this._markModified();
 
@@ -379,7 +396,7 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  pop: function () {
+  pop: function() {
     var ret = [].pop.call(this);
     this._registerAtomic('$set', this);
     this._markModified();
@@ -419,7 +436,7 @@ MongooseArray.mixin = {
    * @see mongodb http://www.mongodb.org/display/DOCS/Updating/#Updating-%24pop
    */
 
-  $shift: function $shift () {
+  $shift: function $shift() {
     this._registerAtomic('$pop', -1);
     this._markModified();
 
@@ -449,7 +466,7 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  shift: function () {
+  shift: function() {
     var ret = [].shift.call(this);
     this._registerAtomic('$set', this);
     this._markModified();
@@ -457,7 +474,9 @@ MongooseArray.mixin = {
   },
 
   /**
-   * Pulls items from the array atomically.
+   * Pulls items from the array atomically. Equality is determined by casting
+   * the provided value to an embedded document and comparing using
+   * [the `Document.equals()` function.](./api.html#document_Document-equals)
    *
    * ####Examples:
    *
@@ -483,16 +502,16 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  pull: function () {
-    var values = [].map.call(arguments, this._cast, this)
-      , cur = this._parent.get(this._path)
-      , i = cur.length
-      , mem;
+  pull: function() {
+    var values = [].map.call(arguments, this._cast, this),
+        cur = this._parent.get(this._path),
+        i = cur.length,
+        mem;
 
     while (i--) {
       mem = cur[i];
-      if (mem instanceof EmbeddedDocument) {
-        if (values.some(function (v) { return v.equals(mem); } )) {
+      if (mem instanceof Document) {
+        if (values.some(function(v) { return v.equals(mem); } )) {
           [].splice.call(cur, i, 1);
         }
       } else if (~cur.indexOf.call(values, mem)) {
@@ -501,7 +520,9 @@ MongooseArray.mixin = {
     }
 
     if (values[0] instanceof EmbeddedDocument) {
-      this._registerAtomic('$pullDocs', values.map( function (v) { return v._id; } ));
+      this._registerAtomic('$pullDocs', values.map(function(v) {
+        return v._id || v;
+      }));
     } else {
       this._registerAtomic('$pullAll', values);
     }
@@ -522,7 +543,7 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  splice: function splice () {
+  splice: function splice() {
     var ret, vals, i;
 
     if (arguments.length) {
@@ -552,7 +573,7 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  unshift: function () {
+  unshift: function() {
     var values = [].map.call(arguments, this._cast, this);
     values = this._schema.applySetters(values, this._parent);
     [].unshift.apply(this, values);
@@ -573,7 +594,7 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  sort: function () {
+  sort: function() {
     var ret = [].sort.apply(this, arguments);
     this._registerAtomic('$set', this);
     this._markModified();
@@ -597,7 +618,7 @@ MongooseArray.mixin = {
    * @method addToSet
    */
 
-  addToSet: function addToSet () {
+  addToSet: function addToSet() {
     var values = [].map.call(arguments, this._mapCast, this);
     values = this._schema.applySetters(values, this._parent);
     var added = [];
@@ -605,15 +626,15 @@ MongooseArray.mixin = {
                values[0] instanceof Date ? 'date' :
                '';
 
-    values.forEach(function (v) {
+    values.forEach(function(v) {
       var found;
       switch (type) {
         case 'doc':
-          found = this.some(function(doc){ return doc.equals(v); });
+          found = this.some(function(doc) { return doc.equals(v); });
           break;
         case 'date':
           var val = +v;
-          found = this.some(function(d){ return +d === val; });
+          found = this.some(function(d) { return +d === val; });
           break;
         default:
           found = ~this.indexOf(v);
@@ -657,7 +678,7 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  set: function set (i, val) {
+  set: function set(i, val) {
     var value = this._cast(val, i);
     value = this._schema.caster instanceof EmbeddedDocument ?
             value :
@@ -678,9 +699,9 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  toObject: function (options) {
+  toObject: function(options) {
     if (options && options.depopulate) {
-      return this.map(function (doc) {
+      return this.map(function(doc) {
         return doc instanceof Document
           ? doc.toObject(options)
           : doc;
@@ -698,7 +719,7 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  inspect: function () {
+  inspect: function() {
     return JSON.stringify(this);
   },
 
@@ -712,11 +733,12 @@ MongooseArray.mixin = {
    * @receiver MongooseArray
    */
 
-  indexOf: function indexOf (obj) {
+  indexOf: function indexOf(obj) {
     if (obj instanceof ObjectId) obj = obj.toString();
     for (var i = 0, len = this.length; i < len; ++i) {
-      if (obj == this[i])
+      if (obj == this[i]) {
         return i;
+      }
     }
     return -1;
   }

@@ -1,7 +1,9 @@
-var $ = require('jparser');
-var request = require('request');
+'use strict';
 
-var convert = require('../services/html_to_json');
+let $ = require('cheerio');
+let request = require('request');
+
+let convert = require('../services/html_to_json');
 
 module.exports = {
   index: function(req, res) {
@@ -10,8 +12,9 @@ module.exports = {
   parse: function(req, res) {
     request(req.query.url, function(err, data, body) {
       if (err) return res(err.toString());
-      body = $(body);
-      res(convert(req.payload, body));
-    });   
+      let json_data = JSON.parse(req.payload.json_data);
+      res(convert(json_data, $.load(body)));
+    });
   }
 }
+

@@ -13,7 +13,7 @@ var errorMessages = MongooseError.messages;
  * @api private
  */
 
-function ValidatorError (properties) {
+function ValidatorError(properties) {
   var msg = properties.message;
   if (!msg) {
     msg = errorMessages.general.default;
@@ -22,7 +22,11 @@ function ValidatorError (properties) {
   this.properties = properties;
   var message = this.formatMessage(msg, properties);
   MongooseError.call(this, message);
-  this.stack = new Error().stack;
+  if (Error.captureStackTrace) {
+    Error.captureStackTrace(this);
+  } else {
+    this.stack = new Error().stack;
+  }
   this.name = 'ValidatorError';
   this.kind = properties.type;
   this.path = properties.path;
@@ -40,7 +44,7 @@ ValidatorError.prototype.constructor = MongooseError;
  * Formats error messages
  */
 
-ValidatorError.prototype.formatMessage = function (msg, properties) {
+ValidatorError.prototype.formatMessage = function(msg, properties) {
   var propertyNames = Object.keys(properties);
   for (var i = 0; i < propertyNames.length; ++i) {
     var propertyName = propertyNames[i];
@@ -56,7 +60,7 @@ ValidatorError.prototype.formatMessage = function (msg, properties) {
  * toString helper
  */
 
-ValidatorError.prototype.toString = function () {
+ValidatorError.prototype.toString = function() {
   return this.message;
 };
 

@@ -11,31 +11,51 @@ var Person = mongoose.model('Person');
 
 // define some dummy data
 var data = [
-  { name : 'bill', age : 25, birthday : new Date().setFullYear((new
-    Date().getFullYear() - 25)), gender : "Male",
-    likes : ['movies', 'games', 'dogs']},
-  { name : 'mary', age : 30, birthday : new Date().setFullYear((new
-    Date().getFullYear() - 30)), gender : "Female",
-    likes : ['movies', 'birds', 'cats']},
-  { name : 'bob', age : 21, birthday : new Date().setFullYear((new
-    Date().getFullYear() - 21)), gender : "Male",
-    likes : ['tv', 'games', 'rabbits']},
-  { name : 'lilly', age : 26, birthday : new Date().setFullYear((new
-    Date().getFullYear() - 26)), gender : "Female",
-    likes : ['books', 'cats', 'dogs']},
-  { name : 'alucard', age : 1000, birthday : new Date().setFullYear((new
-    Date().getFullYear() - 1000)), gender : "Male",
-    likes : ['glasses', 'wine', 'the night']}
+    {
+      name: 'bill',
+      age: 25,
+      birthday: new Date().setFullYear((new Date().getFullYear() - 25)),
+      gender: "Male",
+      likes: ['movies', 'games', 'dogs']
+    },
+    {
+      name: 'mary',
+      age: 30,
+      birthday: new Date().setFullYear((new Date().getFullYear() - 30)),
+      gender: "Female",
+      likes: ['movies', 'birds', 'cats']
+    },
+    {
+      name: 'bob',
+      age: 21,
+      birthday: new Date().setFullYear((new Date().getFullYear() - 21)),
+      gender: "Male",
+      likes: ['tv', 'games', 'rabbits']
+    },
+    {
+      name: 'lilly',
+      age: 26,
+      birthday: new Date().setFullYear((new Date().getFullYear() - 26)),
+      gender: "Female",
+      likes: ['books', 'cats', 'dogs']
+    },
+    {
+      name: 'alucard',
+      age: 1000,
+      birthday : new Date().setFullYear((new Date().getFullYear() - 1000)),
+      gender : "Male",
+      likes : ['glasses', 'wine', 'the night']
+    }
 ];
 
 
-mongoose.connect('mongodb://localhost/persons', function (err) {
+mongoose.connect('mongodb://localhost/persons', function(err) {
   if (err) throw err;
 
   // create all of the dummy people
-  async.each(data, function (item, cb) {
+  async.each(data, function(item, cb) {
     Person.create(item, cb);
-  }, function (err) {
+  }, function(err) {
     if (err) {
       // handle error
     }
@@ -54,7 +74,7 @@ mongoose.connect('mongodb://localhost/persons', function (err) {
         _id : { likes : "$likes" },
         likers : { $addToSet : "$name" }
       } },
-      function (err, result) {
+      function(err, result) {
         if (err) throw err;
         console.log(result);
         //[ { _id: { likes: 'the night' }, likers: [ 'alucard' ] },
@@ -70,7 +90,7 @@ mongoose.connect('mongodb://localhost/persons', function (err) {
         //{ _id: { likes: 'movies' }, likers: [ 'mary', 'bill' ] } ]
 
         cleanup();
-    });
+      });
   });
 });
 

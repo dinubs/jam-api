@@ -7,13 +7,13 @@ var Schema = mongoose.Schema;
 module.exports = function() {
   // define schema
   var PersonSchema = new Schema({
-    name : String,
-    age : Number,
-    birthday : Date
+    name: String,
+    age: Number,
+    birthday: Date
   });
 
   // define a static
-  PersonSchema.statics.findPersonByName = function (name, cb) {
+  PersonSchema.statics.findPersonByName = function(name, cb) {
     this.find({ name : new RegExp(name, 'i') }, cb);
   };
 

@@ -6,9 +6,13 @@
  * @inherits Error https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error
  */
 
-function MongooseError (msg) {
+function MongooseError(msg) {
   Error.call(this);
-  this.stack = new Error().stack;
+  if (Error.captureStackTrace) {
+    Error.captureStackTrace(this);
+  } else {
+    this.stack = new Error().stack;
+  }
   this.message = msg;
   this.name = 'MongooseError';
 }
@@ -45,7 +49,7 @@ MongooseError.Messages = MongooseError.messages;
 MongooseError.CastError = require('./error/cast');
 MongooseError.ValidationError = require('./error/validation');
 MongooseError.ValidatorError = require('./error/validator');
-MongooseError.VersionError =require('./error/version');
+MongooseError.VersionError = require('./error/version');
 MongooseError.OverwriteModelError = require('./error/overwriteModel');
 MongooseError.MissingSchemaError = require('./error/missingSchema');
 MongooseError.DivergentArrayError = require('./error/divergentArray');
