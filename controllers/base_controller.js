@@ -10,7 +10,7 @@ module.exports = {
     res.view('base/index', {title: 'Hello'});
   },
   parse: function(req, res) {
-    request(req.query.url, function(err, data, body) {
+    request(req.payload.url, function(err, data, body) {
       if (err) return res(err.toString());
       let json_data = JSON.parse(req.payload.json_data);
       res(convert(json_data, $.load(body)));

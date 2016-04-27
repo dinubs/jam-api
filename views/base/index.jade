@@ -1,4 +1,14 @@
 extends ../layouts/application
 
 block content
-  h1 Welcome, this page is editable in views/base/index.jade
+  form(method="post" action="/")
+    p
+    input(type="url" name='url' value="http://www.radcircle.com")
+    br
+    textarea(name='json_data' rows='10' cols='100')
+      | {
+      |   "paragraphs": [{ "elem": ".home-post h1", "text": "text"}], 
+      |   "links": [{"elem": ".home-post a:first-of-type", "href": "href"}]
+      | }
+    br
+    input(type="submit")

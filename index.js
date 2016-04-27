@@ -4,7 +4,14 @@ var Path = require('path');
 var Hapi = require('hapi');
 
 var server = new Hapi.Server({ debug: { request: ['error'] } });
-server.connection({port: process.env.PORT || 3000});
+server.connection({
+  port: process.env.PORT || 3000, 
+  routes: {
+    json: {
+      space: 4
+    }
+  }
+});
 
 server.views({
   engines: {

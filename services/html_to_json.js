@@ -20,6 +20,8 @@ function get_primary_type(obj, elem) {
   console.log(elem);
   if (obj === 'img') {
     return elem.attribs['src'];
+  } else if (elem.name === 'a') {
+    return elem.attribs['href'];
   }
   return elem.text();
 }
