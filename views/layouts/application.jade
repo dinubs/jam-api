@@ -8,11 +8,6 @@ html(lang="en")
     meta(charset="UTF-8")
     title=app_name
   body
-    nav
-      .wrap
-        a.logo(href="/")=app_name
-        ul
-          li
-            a.link(href="/") Home
-    block content
+    .wrap
+      block content
     script(type="application/javascript", src="/js/the.js")

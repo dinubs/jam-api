@@ -1,14 +1,21 @@
 extends ../layouts/application
 
 block content
+  h1 Jam API
+  p Jam API is a service that allows you to turn any site into a JSON accessible api using CSS selectors. To get started simply run a post request to http://www.jamapi.xyz with formdata of "url" and "json_data", here's an example of what your data should look like (you can also play around with the api in action with this form, this queries the homepage of Radcircle of their most recent articles, getting the title of the article and the permalink to the article):
   form(method="post" action="/")
-    p
-    input(type="url" name='url' value="http://www.radcircle.com")
-    br
-    textarea(name='json_data' rows='10' cols='100')
+    label(for='url') URL
+    input(type='url' id="url" name='url' value='http://www.radcircle.com')
+    label(for='json_data') JSON
+    textarea(name='json_data' id='json_data' rows='10' cols='100')
       | {
       |   "paragraphs": [{ "elem": ".home-post h1", "text": "text"}], 
-      |   "links": [{"elem": ".home-post a:first-of-type", "href": "href"}]
+      |   "links": [{"elem": ".home-post > a:first-of-type", "href": "href"}]
       | }
-    br
-    input(type="submit")
+    input(type="submit" value='query site')
+  h2 Code Examples
+  strong Node.js
+  pre
+    | request.post('http://www.jamapi.xyz/', {form: {url: 'http://www.radcircle.com', json_data: '{"title": "title"}'}}, function(err, response, body) {
+    |   console.log(body); // Return the title from http://www.radcircle.com
+    | })    

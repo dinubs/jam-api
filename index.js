@@ -5,7 +5,7 @@ var Hapi = require('hapi');
 
 var server = new Hapi.Server({ debug: { request: ['error'] } });
 server.connection({
-  port: process.env.PORT || 3000, 
+  port: process.env.PORT || 5000,
   routes: {
     json: {
       space: 4
@@ -20,12 +20,11 @@ server.views({
   relativeTo: __dirname + '/views',
 });
 
-var globals = require('./globals')(server);
-
 
 // Configure routes
 var routes = require('./routes')(server);
 
-server.start(function () {
-    console.log('Server running at:', server.info.uri);
+server.start(function (err) {
+  console.log(err);
+  console.log('Server running at:', server.info.uri);
 });

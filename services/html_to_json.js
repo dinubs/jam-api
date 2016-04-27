@@ -30,12 +30,14 @@ function array_element(obj, elems) {
   var temp_tags = elems;
   var temp_array = [];
   for (var i = 0; i < temp_tags.length; i++) {
+    var temp_obj = {}
+    temp_obj['index'] = i; // Need to set index because json parsing engines are weird and this will help with organizing things
     if (Object.prototype.toString.call(obj) === '[object Object]') {
-      var temp_obj = parse_object(obj, temp_tags.get(i));
-      console.log(temp_obj);
+      temp_obj['value'] = parse_object(obj, temp_tags.get(i));
       temp_array.push(temp_obj);
     } else {
-      temp_array.push(get_primary_type(obj, temp_tags.get(i)));
+      temp_obj['value'] = get_primary_type(obj, temp_tags.get(i));
+      temp_array.push(temp_obj);
     }
   }
   return temp_array;
@@ -43,7 +45,7 @@ function array_element(obj, elems) {
 
 function convert(tags, $) {
   var converted_tags = {};
-  
+
   for (var key in tags) {
     if (tags.hasOwnProperty(key)) {
       if (Array.isArray(tags[key])) {
@@ -59,7 +61,7 @@ function convert(tags, $) {
       }
     }
   }
-  
+
   return converted_tags;
 }
 
