@@ -26,7 +26,7 @@ block content
   pre
     | require 'httparty'
     | require 'json'
-    | response = HTTParty.post("https://www.gittip.com/#{user}/tips.json",
+    | response = HTTParty.post("https://www.jamapi.xyz/",
     | { 
     |   :body => [ { "url" => "http://www.radcircle.com", "json_data" => "{'title': 'title'}"} ].to_json,
     |   :headers => { 'Content-Type' => 'application/json', 'Accept' => 'application/json'}
