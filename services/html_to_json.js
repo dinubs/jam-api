@@ -15,15 +15,14 @@ function parse_object(obj, elem) {
   return temp_obj;
 }
 
-function get_primary_type(obj, elem) {
-  console.log(obj);
-  console.log(elem);
-  if (obj === 'img') {
+function get_primary_type(elem) {
+  var elem_type = elem.name;
+  if (elem_type === 'img') {
     return elem.attribs['src'];
-  } else if (elem.name === 'a') {
+  } else if (elem_type === 'a') {
     return elem.attribs['href'];
   }
-  return elem.text();
+  return $(elem).text();
 }
 
 function array_element(obj, elems) {
@@ -36,7 +35,7 @@ function array_element(obj, elems) {
       temp_obj['value'] = parse_object(obj, temp_tags.get(i));
       temp_array.push(temp_obj);
     } else {
-      temp_obj['value'] = get_primary_type(obj, temp_tags.get(i));
+      temp_obj['value'] = get_primary_type(temp_tags.get(i));
       temp_array.push(temp_obj);
     }
   }
@@ -57,7 +56,8 @@ function convert(tags, $) {
           converted_tags[key] = array_element(elem, $(tags[key][0]));
         }
       } else {
-        converted_tags[key] = $(tags[key]).text();
+        var elem = tags[key];
+        converted_tags[key] = get_primary_type($(elem).get(0));
       }
     }
   }

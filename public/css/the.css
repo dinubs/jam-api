@@ -5,11 +5,12 @@
   position: relative;
 }
 
-html, body { height: 100%; }
+html, body { min-height: 100%; }
 
 html {
   font-size: 62.5%;
   box-sizing: border-box;
+  padding: 25px 0;
 }
 
 body {
