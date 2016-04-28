@@ -22,7 +22,7 @@ function get_primary_type(elem) {
   } else if (elem_type === 'a' || elem_type === 'link') {
     return elem.attribs['href'];
   }
-  return $(elem).text();
+  return $(elem).text().trim();
 }
 
 function array_element(obj, elems) {
