@@ -12,9 +12,17 @@ module.exports = {
   parse: function(req, res) {
     request(req.payload.url, function(err, data, body) {
       if (err) return res(err.toString());
-      let json_data = JSON.parse(req.payload.json_data);
-      res(convert(json_data, $.load(body)));
+      // This is a poor fix to the issue, but for the time being since it's 4 in the morning.
+      try {
+        let json_data = JSON.parse(req.payload.json_data);
+      } catch(e) {
+        return res({'error': 'invalid JSON'});
+      }
+      try {
+        res(convert(json_data, $.load(body)));
+      } catch(e) {
+        return res({'error': 'A provided CSS selector was not found on the provided URL'}); 
+      }
     });
   }
 }
-
