@@ -18,11 +18,7 @@ module.exports = {
       } catch(e) {
         return res({'error': 'invalid JSON'});
       }
-      try {
-        res(convert(json_data, $.load(body)));
-      } catch(e) {
-        return res({'error': 'A provided CSS selector was not found on the provided URL'}); 
-      }
+      res(convert(json_data, $.load(body)));
     });
   }
 }
