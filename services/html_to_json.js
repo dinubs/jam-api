@@ -19,7 +19,7 @@ function get_primary_type(elem) {
   var elem_type = elem.name;
   if (elem_type === 'img') {
     return elem.attribs['src'];
-  } else if (elem_type === 'a') {
+  } else if (elem_type === 'a' || elem_type === 'link') {
     return elem.attribs['href'];
   }
   return $(elem).text();
