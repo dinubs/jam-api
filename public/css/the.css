@@ -17,6 +17,7 @@ body {
   font-size: 1.6rem;
   margin: 0;
   color: #333;
+  padding: 10px;
   font-family: 'Trebuchet MS', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Tahoma, sans-serif;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
