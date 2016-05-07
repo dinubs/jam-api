@@ -21,13 +21,9 @@ request.post('http://www.jamapi.xyz/', {form: {url: 'http://www.radcircle.com', 
 ### Ruby
 ```ruby
 require 'httparty'
-require 'json'
-response = HTTParty.post("https://www.jamapi.xyz/",
-{ 
-  :body => [ { "url" => "http://www.radcircle.com", "json_data" => "{'title': 'title'}"} ].to_json,
-  :headers => { 'Content-Type' => 'application/json', 'Accept' => 'application/json'}
-})  
-puts JSON.parse(response)
+response = HTTParty.post("http://localhost:5000/",
+  :body => { "url" => "http://www.radcircle.com", "json_data" => "{'title': 'title'}"})  
+puts response
 ```
 
 ## Features

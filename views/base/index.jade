@@ -25,13 +25,9 @@ block content
   strong Ruby
   pre
     | require 'httparty'
-    | require 'json'
-    | response = HTTParty.post("https://www.jamapi.xyz/",
-    | { 
-    |   :body => [ { "url" => "http://www.radcircle.com", "json_data" => "{'title': 'title'}"} ].to_json,
-    |   :headers => { 'Content-Type' => 'application/json', 'Accept' => 'application/json'}
-    | })  
-    | puts JSON.parse(response)
+    | response = HTTParty.post("http://www.jamapi.xyz/",
+    |   :body => { "url" => "http://www.radcircle.com", "json_data" => "{'title': 'title'}"})  
+    | puts response
   h2 Features
   p Will auto pull the img src on corresponding elements, will auto pull the href from links. If passing JSON, you must provide a "elem" property, and then the element attributes you want. When you pass an array with JSON you'll get a structure that looks as follows:
   pre
