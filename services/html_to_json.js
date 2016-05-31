@@ -55,6 +55,9 @@ function convert(tags, $) {
           var elem = tags[key][0];
           converted_tags[key] = array_element(elem, $(tags[key][0]));
         }
+      } else if (Object.prototype.toString.call(tags[key]) === '[object Object]') {
+        var elem = tags[key];
+        converted_tags[key] = parse_object(elem, $(tags[key]['elem']).get(0));
       } else {
         var elem = tags[key];
         converted_tags[key] = get_primary_type($(elem).get(0));
