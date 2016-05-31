@@ -9,7 +9,8 @@ server.connection({
   routes: {
     json: {
       space: 4
-    }
+    },
+    cors: true
   }
 });
 
