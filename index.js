@@ -3,17 +3,19 @@ var fs = require("fs");
 var Path = require('path');
 var Hapi = require('hapi');
 
-var server = new Hapi.Server({ debug: { request: ['error'] } });
+var server = new Hapi.Server({ 
+  debug: { request: ['error'] },
+  connections: {
+    routes: {
+      cors: true
+    }
+  }
+});
 server.connection({
   port: process.env.PORT || 5000,
   routes: {
     json: {
       space: 4
-    },
-    cors: {
-      additionalHeaders: [
-        "Origin"
-      ]
     }
   }
 });
@@ -28,8 +30,6 @@ server.views({
 
 // Configure routes
 var routes = require('./routes')(server);
-
-server.ext('onPreResponse', require('hapi-cors-headers'));
 
 server.start(function (err) {
   console.log(err);
