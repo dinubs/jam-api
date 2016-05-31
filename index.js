@@ -9,10 +9,6 @@ server.connection({
   routes: {
     json: {
       space: 4
-    },
-    cors: {
-      origin: ['*'],
-      additionalHeaders: ['cache-control', 'x-requested-with']
     }
   }
 });
@@ -27,6 +23,8 @@ server.views({
 
 // Configure routes
 var routes = require('./routes')(server);
+
+server.ext('onPreResponse', require('hapi-cors-headers'));
 
 server.start(function (err) {
   console.log(err);

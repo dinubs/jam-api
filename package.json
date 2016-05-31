@@ -12,6 +12,7 @@
     "boom": "^3.1.1",
     "cheerio": "^0.19.0",
     "hapi": "^8.8.0",
+    "hapi-cors-headers": "^1.0.0",
     "hapi-locals": "^0.1.5",
     "jade": "^1.11.0",
     "mongoose": "^4.1.4",
