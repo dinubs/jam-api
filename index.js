@@ -10,7 +10,10 @@ server.connection({
     json: {
       space: 4
     },
-    cors: true
+    cors: {
+      origin: ['*'],
+      additionalHeaders: ['cache-control', 'x-requested-with']
+    }
   }
 });
 
