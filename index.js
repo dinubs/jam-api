@@ -10,7 +10,11 @@ server.connection({
     json: {
       space: 4
     },
-    cors: { origin: ['*']}
+    cors: {
+      additionalHeaders: [
+        "Origin"
+      ]
+    }
   }
 });
 
