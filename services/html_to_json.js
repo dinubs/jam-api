@@ -7,7 +7,7 @@ function parse_object(obj, elem) {
   delete obj.elem;
   for (var key in obj) {
     if (obj[key] === 'text') {
-      temp_obj[key] = $(elem).text();
+      temp_obj[key] = $(elem).text().trim();
     } else {
       temp_obj[key] = elem.attribs[obj[key]];
     }

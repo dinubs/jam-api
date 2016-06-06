@@ -5,14 +5,12 @@ block content
   p Jam API is a service that allows you to turn any site into a JSON accessible api using CSS selectors. To get started simply run a post request to http://www.jamapi.xyz with formdata of "url" and "json_data", here's an example of what your data should look like (you can also play around with the api in action with this form, this queries the homepage of Radcircle of their most recent articles, getting the title of the article and the permalink to the article):
   form(method="post" action="/")
     label(for='url') URL
-    input(type='url' id="url" name='url' value='http://www.radcircle.com')
+    input(type='url' id="url" name='url' value='http://www.producthunt.com/jobs')
     label(for='json_data') JSON
     textarea(name='json_data' id='json_data' rows='10' cols='100')
       | {
-      |   "title": "title",
-      |   "logo": ".nav-logo img",
-      |   "paragraphs": [{ "elem": ".home-post h1", "value": "text"}], 
-      |   "links": [{"elem": ".home-post > a:first-of-type", "location": "href"}]
+      |   "companies": [{"elem": "ul.jobs li.job a", "link": "href", "name": "text"}],
+      |   "company_descriptions": [{"elem": "ul.jobs li.job .description", "name": "text"}]
       | }
     input(type="submit" value='query site')
   h2 Code Examples
