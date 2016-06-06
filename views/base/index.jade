@@ -2,44 +2,52 @@ extends ../layouts/application
 
 block content
   h1 Jam API
-  p Jam API is a service that allows you to turn any site into a JSON accessible api using CSS selectors. To get started simply run a post request to http://www.jamapi.xyz with formdata of "url" and "json_data", here's an example of what your data should look like (you can also play around with the api in action with this form, this queries the homepage of Radcircle of their most recent articles, getting the title of the article and the permalink to the article):
+  p Jam API is a service that allows you to turn any site into a JSON accessible api using CSS selectors. To get started simply run a post request to http://www.jamapi.xyz with formdata of "url" and "json_data".
+  p Here's an example of what your data should look like, this queries the Product Hunt jobs site and gets the company name and the job link:
   form(method="post" action="/")
     label(for='url') URL
     input(type='url' id="url" name='url' value='http://www.producthunt.com/jobs')
     label(for='json_data') JSON
     textarea(name='json_data' id='json_data' rows='10' cols='100')
       | {
+      |   "title": "title",
       |   "companies": [{"elem": "ul.jobs li.job a", "link": "href", "name": "text"}],
       |   "company_descriptions": [{"elem": "ul.jobs li.job .description", "name": "text"}]
       | }
     input(type="submit" value='query site')
+  h2 Example Sites
+  p 
+    a(href="http://www.random-medium.xyz") Random Medium
+    | : Gets you the top Medium post for a random day from September 10, 2014.
+  p 
+    | If you'd like to add your site, please submit a 
+    a(href="http://www.github.com/gavindinubilo/jam-api") pull request.
   h2 Code Examples
-  strong Node.js
-  pre
-    | const request = require('request');
-    | request.post('http://www.jamapi.xyz/', {form: {url: 'http://www.radcircle.com', json_data: '{"title": "title"}'}}, function(err, response, body) {
-    |   console.log(body); // Return the title from http://www.radcircle.com
-    | })  
-  strong Ruby
-  pre
-    | require 'httparty'
-    | response = HTTParty.post("http://www.jamapi.xyz/",
-    |   :body => { "url" => "http://www.radcircle.com", "json_data" => "{'title': 'title'}"})  
-    | puts response
+  p 
+    | Can be found on 
+    a(href="http://www.github.com/gavindinubilo/jam-api") Github
+    | . If you'd like to add your own example please make a pull request.
   h2 Features
-  p Will auto pull the img src on corresponding elements, will auto pull the href from links. If passing JSON, you must provide a "elem" property, and then the element attributes you want. When you pass an array with JSON you'll get a structure that looks as follows:
+  ul
+    li Passing an element that equates to an img will return the img src.
+    li Passing an element that equates to a link will return the href of the link.
+    li Passing any other element will return the text of that element.
+  p When you pass an array with JSON you'll get a structure that looks as follows:
   pre
-    | [
-    |   {
-    |       "index": 0,
-    |       "value": {
-    |           "value": "Porter Robinson – Sad Machine (Cosmo’s Midnight Remix)"
-    |       }
-    |   },
-    |   {
-    |       "index": 1,
-    |       "value": {
-    |           "value": "Listen to Rachel Platten’s “Stand By You”"
-    |       }
-    |   }]
+    | "companies": [
+    |    {
+    |        "index": 0,
+    |        "value": {
+    |            "link": "http://blog.underdog.io/post/140227881612/were-hiring-a-communityrecruiting-lead",
+    |            "name": "Underdog.io"
+    |        }
+    |    },
+    |    {
+    |        "index": 1,
+    |        "value": {
+    |            "link": "http://jobs.babbel.com/en/?gh_jid=202241",
+    |            "name": "Babbel"
+    |        }
+    |    },
+    | ]
   p All the attributes you provide as JSON will be put inside of the value property, and the index property is to be able to track what index it ocurred in the DOM. I nested JSON values into it's own so that you can still have an "index" property returned and not run into issues.

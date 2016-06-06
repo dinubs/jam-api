@@ -36,7 +36,7 @@ h1, h2 {
 }
 
 p {
-  line-height: 2.4rem;
+  line-height: 1.5;
 }
 
 strong {
@@ -60,7 +60,14 @@ label {
 input, textarea {
   width: 100%;
   margin: 5px 0;
-  padding: 5px;
+  padding: 15px;
+  border: 3px solid;
+  border-color: #F9F7F7;
+  outline: none;
+}
+
+input:focus, textarea:focus {
+  border-color: #4D6DE3;
 }
 
 input[type="submit"] {
@@ -73,4 +80,18 @@ input[type="submit"] {
   text-transform: uppercase;
   font-weight: bold;
   cursor: pointer;
+}
+
+a {
+  color: #4D6DE3;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  padding: 10px 0;
+  padding-left: 40px;
 }
