@@ -30,12 +30,11 @@ function array_element(obj, elems) {
   var temp_array = [];
   for (var i = 0; i < temp_tags.length; i++) {
     var temp_obj = {}
-    temp_obj['index'] = i; // Need to set index because json parsing engines are weird and this will help with organizing things
     if (Object.prototype.toString.call(obj) === '[object Object]') {
-      temp_obj['value'] = parse_object(obj, temp_tags.get(i));
+      temp_obj = parse_object(obj, temp_tags.get(i));
       temp_array.push(temp_obj);
     } else {
-      temp_obj['value'] = get_primary_type(temp_tags.get(i));
+      temp_obj = get_primary_type(temp_tags.get(i));
       temp_array.push(temp_obj);
     }
   }
