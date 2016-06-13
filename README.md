@@ -18,6 +18,23 @@ request.post('http://www.jamapi.xyz/', {form: {url: 'http://www.radcircle.com', 
   console.log(body); // Return the title from http://www.radcircle.com
 })  
 ```
+### Javascript
+```
+fetch('http://www.jamapi.xyz', {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    url: 'http://www.radcircle.com',
+    json_data: '{"title": "title"}'})
+  }).then(function(response) {
+    return response.json();
+  }).then(function(json) {
+    document.body.innerHTML = json;
+  });  
+```
 ### Ruby
 ```ruby
 require 'httparty'
