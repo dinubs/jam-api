@@ -12,23 +12,24 @@ Using API you can simply generate JSON data from any website.
 
 ## Code samples
 ### nodejs
-```nodejs
+```js
 const request = require('request');
 request.post('http://www.jamapi.xyz/', {form: {url: 'http://www.radcircle.com', json_data: '{"title": "title"}'}}, function(err, response, body) {
   console.log(body); // Return the title from http://www.radcircle.com
 })  
 ```
 ### Javascript
-```
+```js
 fetch('http://www.jamapi.xyz', {
-  method: 'POST',
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    url: 'http://www.radcircle.com',
-    json_data: '{"title": "title"}'})
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      url: 'http://www.radcircle.com',
+      json_data: '{"title": "title"}'
+    })
   }).then(function(response) {
     return response.json();
   }).then(function(json) {
