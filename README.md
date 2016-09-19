@@ -14,7 +14,7 @@ Using API you can simply generate JSON data from any website.
 ### nodejs
 ```js
 const request = require('request');
-request.post('http://www.jamapi.xyz/', {form: {url: 'http://www.radcircle.com', json_data: '{"title": "title"}'}}, function(err, response, body) {
+request.post('http://www.jamapi.xyz/', {form: {url: 'http://www.gavin.codes/', json_data: '{"title": "title"}'}}, function(err, response, body) {
   console.log(body); // Return the title from http://www.radcircle.com
 })  
 ```
@@ -27,7 +27,7 @@ fetch('http://www.jamapi.xyz', {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      url: 'http://www.radcircle.com',
+      url: 'http://www.gavin.codes/',
       json_data: '{"title": "title"}'
     })
   }).then(function(response) {
@@ -40,8 +40,16 @@ fetch('http://www.jamapi.xyz', {
 ```ruby
 require 'httparty'
 response = HTTParty.post("http://www.jamapi.xyz/",
-  :body => { "url" => "http://www.radcircle.com", "json_data" => "{'title': 'title'}"})  
+  :body => { "url" => "http://www.gavin.codes/", "json_data" => "{'title': 'title'}"})  
 puts response.to_json
+```
+### Python
+```python
+import requests
+payload = {'url': 'http://www.gavin.codes/', 'json_data': '{"title": "title"}'}
+
+r = requests.post("http://www.jamapi.xyz", data=payload)
+print(r.json())
 ```
 
 ## Features
