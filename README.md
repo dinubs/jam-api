@@ -15,7 +15,7 @@ Using API you can simply generate JSON data from any website.
 ```js
 const request = require('request');
 request.post('http://www.jamapi.xyz/', {form: {url: 'http://www.gavin.codes/', json_data: '{"title": "title"}'}}, function(err, response, body) {
-  console.log(body); // Return the title from http://www.radcircle.com
+  console.log(body);
 })  
 ```
 ### Javascript
