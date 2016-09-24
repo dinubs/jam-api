@@ -40,4 +40,11 @@ module.exports = function(server) {
       res(process.env['JAMAPI_SSL_KEY']);
     }
   })
+  server.route({
+    method: 'GET',
+    path: `/.well-known/acme-challenge/${process.env['JAMAPI_WWW_SSL_TOKEN']}`,
+    handler: function (req, res) {
+      res(process.env['JAMAPI_WWW_SSL_KEY']);
+    }
+  })
 };
