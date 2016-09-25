@@ -48,7 +48,7 @@ puts response.to_json
 import requests
 payload = {'url': 'http://www.gavin.codes/', 'json_data': '{"title": "title"}'}
 
-r = requests.post("http://www.jamapi.xyz", data=payload)
+r = requests.post("https://www.jamapi.xyz", data=payload)
 print(r.json())
 ```
 
