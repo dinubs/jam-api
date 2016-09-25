@@ -33,18 +33,4 @@ module.exports = function(server) {
           reply.file("./public/js/"+request.params.file+".js");
       }
   });
-  server.route({
-    method: 'GET',
-    path: `/.well-known/acme-challenge/${process.env['JAMAPI_SSL_TOKEN']}`,
-    handler: function (req, res) {
-      res(process.env['JAMAPI_SSL_KEY']);
-    }
-  })
-  server.route({
-    method: 'GET',
-    path: `/.well-known/acme-challenge/${process.env['JAMAPI_WWW_SSL_TOKEN']}`,
-    handler: function (req, res) {
-      res(process.env['JAMAPI_WWW_SSL_KEY']);
-    }
-  })
 };

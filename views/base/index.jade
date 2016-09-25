@@ -2,11 +2,11 @@ extends ../layouts/application
 
 block content
   h1 Jam API
-  p Jam API is a service that allows you to turn any site into a JSON accessible api using CSS selectors. To get started simply run a post request to http://www.jamapi.xyz with formdata of "url" and "json_data".
+  p Jam API is a service that allows you to turn any site into a JSON accessible api using CSS selectors. To get started simply run a post request to https://www.jamapi.xyz with formdata of "url" and "json_data".
   p Here's an example of what your data should look like, this queries the Product Hunt jobs site and gets the company name and the job link:
   form(method="post" action="/")
     label(for='url') URL
-    input(type='url' id="url" name='url' value='http://www.producthunt.com/jobs')
+    input(type='url' id="url" name='url' value='https://www.producthunt.com/jobs')
     label(for='json_data') JSON
     textarea(name='json_data' id='json_data' rows='10' cols='100')
       | {
@@ -17,15 +17,15 @@ block content
     input(type="submit" value='query site')
   h2 Example Sites
   p 
-    a(href="http://www.random-medium.xyz") Random Medium
+    a(href="https://www.random-medium.xyz") Random Medium
     | : Gets you the top Medium post for a random day from September 10, 2014.
   p 
     | If you'd like to add your site, please submit a 
-    a(href="http://www.github.com/gavindinubilo/jam-api") pull request.
+    a(href="https://www.github.com/gavindinubilo/jam-api") pull request.
   h2 Code Examples
   p 
     | Can be found on 
-    a(href="http://www.github.com/gavindinubilo/jam-api") Github
+    a(href="https://www.github.com/gavindinubilo/jam-api") Github
     | . If you'd like to add your own example please make a pull request.
   h2 Features
   ul
@@ -38,14 +38,14 @@ block content
     |    {
     |        "index": 0,
     |        "value": {
-    |            "link": "http://blog.underdog.io/post/140227881612/were-hiring-a-communityrecruiting-lead",
+    |            "link": "https://blog.underdog.io/post/140227881612/were-hiring-a-communityrecruiting-lead",
     |            "name": "Underdog.io"
     |        }
     |    },
     |    {
     |        "index": 1,
     |        "value": {
-    |            "link": "http://jobs.babbel.com/en/?gh_jid=202241",
+    |            "link": "https://jobs.babbel.com/en/?gh_jid=202241",
     |            "name": "Babbel"
     |        }
     |    },

@@ -1,5 +1,5 @@
 # Jam API
-Jam API is a service that allows you to turn any site into a JSON accessible api using CSS selectors. To get started simply run a post request to http://www.jamapi.xyz with formdata of "url" and "json_data", here's an example of what your data should look like:
+Jam API is a service that allows you to turn any site into a JSON accessible api using CSS selectors. To get started simply run a post request to https://www.jamapi.xyz with formdata of "url" and "json_data", here's an example of what your data should look like:
 ```json
 {
   "title": "title",
@@ -14,20 +14,20 @@ Using API you can simply generate JSON data from any website.
 ### nodejs
 ```nodejs
 const request = require('request');
-request.post('http://www.jamapi.xyz/', {form: {url: 'http://www.radcircle.com', json_data: '{"title": "title"}'}}, function(err, response, body) {
-  console.log(body); // Return the title from http://www.radcircle.com
+request.post('https://www.jamapi.xyz/', {form: {url: 'https://www.radcircle.com', json_data: '{"title": "title"}'}}, function(err, response, body) {
+  console.log(body); // Return the title from https://www.radcircle.com
 })  
 ```
 ### Javascript
 ```
-fetch('http://www.jamapi.xyz', {
+fetch('https://www.jamapi.xyz', {
   method: 'POST',
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    url: 'http://www.radcircle.com',
+    url: 'https://www.radcircle.com',
     json_data: '{"title": "title"}'})
   }).then(function(response) {
     return response.json();
@@ -38,8 +38,8 @@ fetch('http://www.jamapi.xyz', {
 ### Ruby
 ```ruby
 require 'httparty'
-response = HTTParty.post("http://www.jamapi.xyz/",
-  :body => { "url" => "http://www.radcircle.com", "json_data" => "{'title': 'title'}"})  
+response = HTTParty.post("https://www.jamapi.xyz/",
+  :body => { "url" => "https://www.radcircle.com", "json_data" => "{'title': 'title'}"})  
 puts response.to_json
 ```
 
