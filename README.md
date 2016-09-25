@@ -12,23 +12,24 @@ Using API you can simply generate JSON data from any website.
 
 ## Code samples
 ### nodejs
-```nodejs
+```js
 const request = require('request');
-request.post('https://www.jamapi.xyz/', {form: {url: 'https://www.radcircle.com', json_data: '{"title": "title"}'}}, function(err, response, body) {
-  console.log(body); // Return the title from https://www.radcircle.com
+request.post('https://www.jamapi.xyz/', {form: {url: 'http://www.gavin.codes/', json_data: '{"title": "title"}'}}, function(err, response, body) {
+  console.log(body);
 })  
 ```
 ### Javascript
-```
+```js
 fetch('https://www.jamapi.xyz', {
-  method: 'POST',
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    url: 'https://www.radcircle.com',
-    json_data: '{"title": "title"}'})
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      url: 'http://www.gavin.codes/',
+      json_data: '{"title": "title"}'
+    })
   }).then(function(response) {
     return response.json();
   }).then(function(json) {
@@ -39,8 +40,16 @@ fetch('https://www.jamapi.xyz', {
 ```ruby
 require 'httparty'
 response = HTTParty.post("https://www.jamapi.xyz/",
-  :body => { "url" => "https://www.radcircle.com", "json_data" => "{'title': 'title'}"})  
+  :body => { "url" => "http://www.gavin.codes/", "json_data" => "{'title': 'title'}"})  
 puts response.to_json
+```
+### Python
+```python
+import requests
+payload = {'url': 'http://www.gavin.codes/', 'json_data': '{"title": "title"}'}
+
+r = requests.post("http://www.jamapi.xyz", data=payload)
+print(r.json())
 ```
 
 ## Features
