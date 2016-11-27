@@ -4,7 +4,7 @@ Jam API is a service that allows you to turn any site into a JSON accessible api
 {
   "title": "title",
   "logo": ".nav-logo img",
-  "paragraphs": [{ "elem": ".home-post h1", "value": "text"}], 
+  "paragraphs": [{ "elem": ".home-post h1", "value": "text"}],
   "links": [{"elem": ".home-post > a:first-of-type", "location": "href"}]
 }
 ```
@@ -50,6 +50,13 @@ payload = {'url': 'http://www.gavin.codes/', 'json_data': '{"title": "title"}'}
 
 r = requests.post("https://www.jamapi.xyz", data=payload)
 print(r.json())
+```
+### curl
+```shell
+curl -X POST \
+  -F 'url=http://www.gavin.codes/' \
+  -F 'json_data={"title":"title"}' \
+  https://www.jamapi.xyz
 ```
 
 ## Features
