@@ -1,3 +1,5 @@
+**This project is no longer active developement, please see [CoolQLCool](https://www.github.com/dinubs/coolqlcool) for a similar more active project ([ref](https://github.com/dinubs/jam-api/issues/24))**
+
 # Jam API
 Jam API is a service that allows you to turn any site into a JSON accessible api using CSS selectors. To get started simply run a post request to https://www.jamapi.xyz with formdata of "url" and "json_data", here's an example of what your data should look like:
 ```json
